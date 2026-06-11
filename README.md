@@ -13,6 +13,7 @@
 - Импортирует ранее сохраненный JSON.
 - Формирует отдельные представления для аналитики, онбординга и клиентской презентации.
 - Поддерживает печать / сохранение в PDF через системный диалог браузера.
+- Включает стартовый BPM-шаблон запуска CRM Referral Widget Enterprise MVP по ТЗ.
 
 ## Запуск
 
@@ -51,6 +52,18 @@ Customer Success: Провести kickoff -> подтверждены цели,
 ```
 
 Агент автоматически определяет дорожку, результат, KPI, риск, onboarding-заметку и тип элемента.
+
+## Стартовая модель по ТЗ
+
+По умолчанию сервис открывает BPM-модель `Запуск CRM Referral Widget Enterprise MVP`.
+
+Она раскладывает ТЗ по:
+
+- проектной команде и дорожкам ответственности;
+- roadmap 20-22 недели;
+- Sprint 0, архитектуре, CRM spike, dev/staging и CI/CD;
+- core modules: SaaS Core, CRM Integration, Partner Registry, Referral Links, Attribution, Commission Rules, Payouts, Analytics, Notifications, Audit Log;
+- acceptance criteria, рискам и controlled rollout.
 
 ## Проверка
 

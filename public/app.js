@@ -88,6 +88,31 @@ const templates = {
       "Юристы: Проверить ограничения -> выявлены юридические риски [время проверки]\n" +
       "Руководитель: Решить, согласовать ли инициативу -> выбран статус и условия [цикл согласования]\n" +
       "Исполнитель: Запланировать реализацию -> создан план работ и контрольные точки [готовность к запуску]"
+  },
+  "crm-referral-launch": {
+    title: "Запуск CRM Referral Widget Enterprise MVP",
+    owner: "Product Owner / Delivery Manager",
+    goal: "Запустить production-grade CRM-native SaaS-виджет для реферальных и партнерских программ внутри AmoCRM/Kommo за 20-22 недели, сохранив фокус на CRM widget layer, финансовой прозрачности, audit log и controlled rollout.",
+    trigger: "Утверждено ТЗ CRM Referral Widget Enterprise Product Spec v1.0",
+    outcome: "Production MVP опубликован, AmoCRM/Kommo интеграция работает, core flows приняты, пилотные клиенты подключены, roadmap Bitrix24 подготовлен",
+    lanes: "Product & Delivery\nArchitecture & Backend\nCRM Integration\nFrontend & UX\nQA Security DevOps\nPilot GTM Customer Success",
+    steps:
+      "Product & Delivery: Утвердить рамку продукта, роли и MVP scope -> зафиксированы продуктовая рамка, ограничения и роли Super Admin, Company Admin, CRM Manager, Finance Manager, Referral Partner, Partner Recruiter [scope baseline]\n" +
+      "Product & Delivery: Подготовить Jira/Linear backlog по 19 MVP epics -> backlog готов к Sprint 0, оценки 20-22 недели сохранены [backlog readiness]\n" +
+      "Architecture & Backend: Согласовать modular monolith architecture, ERD и API contracts -> подтверждены tenant model, core tables, API groups и boundaries модулей [architecture sign-off]\n" +
+      "CRM Integration: Провести AmoCRM/Kommo OAuth, Webhooks и Widget SDK spike -> доказана техническая реализуемость connect, refreshToken, deal context и webhook handling [CRM spike passed]\n" +
+      "QA Security DevOps: Развернуть dev/staging, CI/CD, monitoring, backups и базовый security framework -> команда имеет безопасный контур разработки и контроля [environment readiness]\n" +
+      "Architecture & Backend: Реализовать SaaS Core, Auth, RBAC и tenant isolation -> multi-tenant foundation готов, права и изоляция данных проверены [tenant isolation tests]\n" +
+      "CRM Integration: Реализовать CRM Integration Layer и Deal Sync Module -> AmoCRM/Kommo подключается, сделки и стадии синхронизируются, ошибки видны в CRM health center [sync reliability]\n" +
+      "Architecture & Backend: Реализовать Partner Registry, Referral Link Engine и Partner Recruitment Module -> партнеры, referral links, recruitment links и recruiter_partner_id работают [partner core completion]\n" +
+      "Architecture & Backend: Реализовать Attribution Engine, disputes и audit timeline -> лиды и сделки закрепляются за партнерами, конфликты видны и разрешаются [attribution accuracy]\n" +
+      "Frontend & UX: Реализовать CRM Embedded Widget для карточки сделки -> виджет показывает партнера, источник, комиссию, payout status, conflict warning и audit timeline до 1.5 сек [widget load time]\n" +
+      "Architecture & Backend: Реализовать Commission Rules, Commission Events и Payout Status -> fixed, percent rules, manual recruiter bonus, breakdown, rule version и snapshot работают [commission correctness]\n" +
+      "Frontend & UX: Реализовать SaaS Admin Panel и Partner Mini Portal -> админ управляет программой, партнер видит ссылки, лиды, сделки, комиссии, выплаты и приглашенных партнеров [portal adoption readiness]\n" +
+      "Architecture & Backend: Собрать Analytics, Notifications и CRM Health Center -> dashboards, top partners, activation funnel, email/CRM notifications и health signals доступны [analytics coverage]\n" +
+      "QA Security DevOps: Провести security hardening, integration, E2E, regression, UAT и acceptance criteria review -> критичные сценарии CRM, attribution, commission, payouts, portal и monitoring приняты [release candidate readiness]\n" +
+      "Pilot GTM Customer Success: Запустить controlled rollout: internal pilot, closed beta, paid pilot, public MVP -> проверены core flows, разные сценарии клиентов, готовность платить и масштабирование [pilot conversion]\n" +
+      "Product & Delivery: Подготовить next release Bitrix24 и post-MVP backlog -> Bitrix24 roadmap, partner activation reward, расширенная аналитика и templates правил готовы к планированию [release 1.2 readiness]"
   }
 };
 
@@ -291,7 +316,7 @@ function loadState() {
   } catch (error) {
     console.warn("Cannot load saved BPM model", error);
   }
-  return createModelFromTemplate("client-onboarding");
+  return createModelFromTemplate("crm-referral-launch");
 }
 
 function normalizeModel(model) {
