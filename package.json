@@ -1,0 +1,17 @@
+{
+  "name": "bpm-agent-studio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Local BPM agent studio for editable business process diagrams, onboarding, analytics, and client presentations.",
+  "scripts": {
+    "dev": "node bpm-server.js",
+    "start": "node bpm-server.js",
+    "build": "node scripts/build-pages.mjs",
+    "validate": "node scripts/validate.mjs",
+    "check": "node --check bpm-server.js && node --check app.js && node --check scripts/validate.mjs && node --check scripts/build-pages.mjs"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
