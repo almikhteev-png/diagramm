@@ -116,6 +116,8 @@ const templates = {
   }
 };
 
+const urlTemplateKey = getUrlTemplateKey();
+
 const typeLabels = {
   start: "Старт",
   task: "Действие",
@@ -159,7 +161,12 @@ document.addEventListener("DOMContentLoaded", () => {
   bindEvents();
   hydrateBriefFields();
   renderAll();
-  persist("Автосохранение включено");
+  if (urlTemplateKey) {
+    dom.saveStatus.textContent = "Открыто из шаблона";
+    setAgentMessage("BPM-модель по ТЗ открыта по прямой ссылке. Отредактируйте элемент или нажмите сохранить, чтобы записать эту версию в браузере.");
+  } else {
+    persist("Автосохранение включено");
+  }
 });
 
 function bindDom() {
@@ -307,6 +314,10 @@ function bindEvents() {
 }
 
 function loadState() {
+  if (urlTemplateKey) {
+    return createModelFromTemplate(urlTemplateKey);
+  }
+
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
@@ -317,6 +328,16 @@ function loadState() {
     console.warn("Cannot load saved BPM model", error);
   }
   return createModelFromTemplate("crm-referral-launch");
+}
+
+function getUrlTemplateKey() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const key = params.get("template") || params.get("bpm");
+    return key && templates[key] ? key : "";
+  } catch {
+    return "";
+  }
 }
 
 function normalizeModel(model) {
