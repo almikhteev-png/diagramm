@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BPM Agent Studio</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand-block">
+          <div class="brand-mark" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div>
+            <p class="eyebrow">Business Process Modeling</p>
+            <h1>BPM Agent Studio</h1>
+          </div>
+        </div>
+        <div class="topbar-actions" aria-label="Основные действия">
+          <button class="icon-button" id="newProjectButton" title="Новая модель" aria-label="Новая модель">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+          <button class="icon-button" id="saveButton" title="Сохранить изменения" aria-label="Сохранить изменения">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>
+          </button>
+          <button class="icon-button" id="exportJsonButton" title="Экспорт JSON" aria-label="Экспорт JSON">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg>
+          </button>
+          <button class="icon-button" id="importButton" title="Импорт JSON" aria-label="Импорт JSON">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5M12 3v12"/></svg>
+          </button>
+          <input type="file" id="importInput" accept="application/json" hidden />
+          <button class="icon-button" id="exportSvgButton" title="Экспорт SVG" aria-label="Экспорт SVG">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>
+          </button>
+          <button class="icon-button" id="exportPngButton" title="Экспорт полной диаграммы PNG" aria-label="Экспорт полной диаграммы PNG">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M8 17l2.5-3 2 2.5 1.5-1.5 2 2"/></svg>
+          </button>
+          <button class="icon-button" id="exportPdfButton" title="Экспорт полной диаграммы PDF" aria-label="Экспорт полной диаграммы PDF">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>
+          </button>
+          <button class="mode-button" id="presentationButton">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18v12H3z"/><path d="M12 16v4M8 20h8"/></svg>
+            <span>Клиентская версия</span>
+          </button>
+        </div>
+      </header>
+
+      <section class="project-strip" aria-label="Сведения о проекте">
+        <label>
+          <span>Название процесса</span>
+          <input id="projectTitleInput" type="text" />
+        </label>
+        <label>
+          <span>Владелец</span>
+          <input id="projectOwnerInput" type="text" />
+        </label>
+        <label>
+          <span>Аудитория</span>
+          <select id="audienceSelect">
+            <option value="internal">Команда</option>
+            <option value="executive">Руководство</option>
+            <option value="client">Клиент</option>
+            <option value="onboarding">Онбординг</option>
+          </select>
+        </label>
+        <div class="status-pill" id="saveStatus">Готово к работе</div>
+      </section>
+
+      <div class="main-grid" id="mainGrid">
+        <aside class="panel agent-panel" aria-label="Агент построения BPM">
+          <nav class="segmented" aria-label="Разделы агента">
+            <button class="active" data-left-tab="agent">Агент</button>
+            <button data-left-tab="model">Модель</button>
+            <button data-left-tab="properties">Свойства</button>
+          </nav>
+
+          <section class="tab-pane active" data-left-pane="agent">
+            <div class="panel-header">
+              <p class="eyebrow">Consultant engine</p>
+              <h2>Собрать процесс</h2>
+            </div>
+
+            <label class="field">
+              <span>Шаблон</span>
+              <select id="templateSelect">
+                <option value="custom">С нуля</option>
+                <option value="sales">Продажи B2B</option>
+                <option value="client-onboarding">Онбординг клиента</option>
+                <option value="support">Обработка обращения</option>
+                <option value="approval">Согласование решения</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Цель процесса</span>
+              <textarea id="goalInput" rows="3"></textarea>
+            </label>
+
+            <div class="two-fields">
+              <label class="field">
+                <span>Триггер</span>
+                <input id="triggerInput" type="text" />
+              </label>
+              <label class="field">
+                <span>Результат</span>
+                <input id="outcomeInput" type="text" />
+              </label>
+            </div>
+
+            <label class="field">
+              <span>Роли / дорожки</span>
+              <textarea id="lanesInput" rows="4"></textarea>
+            </label>
+
+            <label class="field">
+              <span>Конкретные действия</span>
+              <textarea id="stepsInput" rows="9"></textarea>
+            </label>
+
+            <div class="agent-actions">
+              <button class="primary-button" id="generateButton">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.9 4.7L19 9l-4.1 3.1L16 17l-4-2.7L8 17l1.1-4.9L5 9l5.1-1.3Z"/><path d="M19 15v6M16 18h6"/></svg>
+                Построить BPM
+              </button>
+              <button class="ghost-button" id="reviewButton">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                Проверить как консультант
+              </button>
+            </div>
+
+            <div class="agent-chat" aria-live="polite">
+              <div class="agent-avatar">BPM</div>
+              <div>
+                <strong>Агент-методолог</strong>
+                <p id="agentMessage">Опишите роли и действия. Я соберу BPM-модель с этапами, KPI, рисками, результатами и версией для презентации.</p>
+              </div>
+            </div>
+
+            <label class="field">
+              <span>Быстрая команда агенту</span>
+              <div class="command-row">
+                <input id="agentCommandInput" type="text" placeholder="Например: добавь риски, упрости для клиента" />
+                <button class="icon-button" id="runCommandButton" title="Выполнить команду" aria-label="Выполнить команду">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                </button>
+              </div>
+            </label>
+          </section>
+
+          <section class="tab-pane" data-left-pane="model">
+            <div class="panel-header">
+              <p class="eyebrow">Editable structure</p>
+              <h2>Элементы процесса</h2>
+            </div>
+            <div class="toolbar-stack">
+              <button class="tool-button" data-add-node="task">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z"/></svg>
+                Действие
+              </button>
+              <button class="tool-button" data-add-node="gateway">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 9-9 9-9-9Z"/></svg>
+                Решение
+              </button>
+              <button class="tool-button" data-add-node="metric">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5M4 19h16"/><path d="M8 16V9M12 16V7M16 16v-4"/></svg>
+                Аналитика
+              </button>
+              <button class="tool-button" data-add-node="data">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6v20h12V8Z"/><path d="M14 2v6h4"/></svg>
+                Документ
+              </button>
+            </div>
+            <div class="model-list" id="modelList"></div>
+          </section>
+
+          <section class="tab-pane" data-left-pane="properties">
+            <div class="panel-header">
+              <p class="eyebrow">Selected element</p>
+              <h2>Свойства</h2>
+            </div>
+            <div id="propertiesPane" class="properties-empty">
+              Выберите элемент на диаграмме, чтобы редактировать действие, KPI, результат и onboarding-заметки.
+            </div>
+          </section>
+        </aside>
+
+        <main class="canvas-shell">
+          <div class="canvas-toolbar">
+            <div class="canvas-title">
+              <p class="eyebrow">Рабочая версия</p>
+              <h2 id="canvasTitle">BPM-карта процесса</h2>
+            </div>
+            <div class="canvas-tools" aria-label="Инструменты холста">
+              <button class="icon-button" id="layoutButton" title="Авторазложить" aria-label="Авторазложить">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h6v6H3zM15 6h6v6h-6zM9 18h6"/><path d="M6 12v3a3 3 0 0 0 3 3M18 12v3a3 3 0 0 1-3 3"/></svg>
+              </button>
+              <button class="icon-button" id="zoomOutButton" title="Уменьшить" aria-label="Уменьшить">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M8 11h6M21 21l-4.3-4.3"/></svg>
+              </button>
+              <button class="icon-button" id="zoomInButton" title="Увеличить" aria-label="Увеличить">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M8 11h6M11 8v6M21 21l-4.3-4.3"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="canvas-frame" id="canvasFrame">
+            <svg id="diagramSvg" role="img" aria-label="BPM диаграмма процесса"></svg>
+            <div class="inline-editor" id="inlineEditor" hidden></div>
+          </div>
+        </main>
+
+        <aside class="panel insight-panel" aria-label="Аналитика и презентация">
+          <nav class="segmented" aria-label="Разделы аналитики">
+            <button class="active" data-right-tab="analytics">Аналитика</button>
+            <button data-right-tab="onboarding">Онбординг</button>
+            <button data-right-tab="client">Клиент</button>
+          </nav>
+
+          <section class="tab-pane active" data-right-pane="analytics">
+            <div class="panel-header">
+              <p class="eyebrow">Result intelligence</p>
+              <h2>Качество модели</h2>
+            </div>
+            <div class="score-ring" id="scoreRing">
+              <span id="scoreValue">0</span>
+              <small>готовность</small>
+            </div>
+            <div class="metrics-grid" id="metricsGrid"></div>
+            <h3>Рекомендации</h3>
+            <div class="recommendations" id="recommendationsList"></div>
+            <h3>Результат каждого действия</h3>
+            <div class="result-feed" id="resultFeed"></div>
+          </section>
+
+          <section class="tab-pane" data-right-pane="onboarding">
+            <div class="panel-header">
+              <p class="eyebrow">Enablement path</p>
+              <h2>Онбординг команды</h2>
+            </div>
+            <div class="onboarding-hero">
+              <strong id="onboardingTitle">План внедрения</strong>
+              <p id="onboardingSummary">Пошаговый путь обучения формируется из действий процесса.</p>
+            </div>
+            <div class="onboarding-list" id="onboardingList"></div>
+          </section>
+
+          <section class="tab-pane" data-right-pane="client">
+            <div class="panel-header">
+              <p class="eyebrow">Presentation version</p>
+              <h2>Версия для клиентов</h2>
+            </div>
+            <div class="slide-selector" id="slideSelector"></div>
+            <div class="client-slide" id="clientSlide"></div>
+          </section>
+        </aside>
+      </div>
+
+      <section class="presentation-stage" id="presentationStage" aria-label="Презентационная версия">
+        <div class="presentation-header">
+          <div>
+            <p class="eyebrow">Client-ready BPM story</p>
+            <h2 id="presentationTitle">Презентация процесса</h2>
+          </div>
+          <button class="mode-button" id="closePresentationButton">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            <span>Вернуться к редактору</span>
+          </button>
+        </div>
+        <div class="presentation-layout">
+          <div class="presentation-copy" id="presentationCopy"></div>
+          <div class="presentation-map">
+            <svg id="presentationSvg" role="img" aria-label="Презентационная BPM диаграмма"></svg>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <template id="propertyTemplate">
+      <div class="property-form">
+        <label class="field">
+          <span>Название</span>
+          <input data-prop="label" type="text" />
+        </label>
+        <div class="two-fields">
+          <label class="field">
+            <span>Тип</span>
+            <select data-prop="type">
+              <option value="start">Старт</option>
+              <option value="task">Действие</option>
+              <option value="gateway">Решение</option>
+              <option value="data">Документ</option>
+              <option value="metric">Аналитика</option>
+              <option value="end">Финиш</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Дорожка</span>
+            <select data-prop="laneId" data-lane-select></select>
+          </label>
+        </div>
+        <div class="two-fields">
+          <label class="field">
+            <span>Ширина элемента</span>
+            <input data-prop="width" type="number" min="72" max="360" step="4" />
+          </label>
+          <label class="field">
+            <span>Высота элемента</span>
+            <input data-prop="height" type="number" min="62" max="240" step="4" />
+          </label>
+        </div>
+        <label class="field">
+          <span>Описание</span>
+          <textarea data-prop="description" rows="3"></textarea>
+        </label>
+        <div class="two-fields">
+          <label class="field">
+            <span>Владелец</span>
+            <input data-prop="owner" type="text" />
+          </label>
+          <label class="field">
+            <span>SLA</span>
+            <input data-prop="sla" type="text" />
+          </label>
+        </div>
+        <div class="two-fields">
+          <label class="field">
+            <span>Вход</span>
+            <input data-prop="input" type="text" />
+          </label>
+          <label class="field">
+            <span>Выход</span>
+            <input data-prop="output" type="text" />
+          </label>
+        </div>
+        <label class="field">
+          <span>KPI / метрика</span>
+          <input data-prop="kpi" type="text" />
+        </label>
+        <label class="field">
+          <span>Аналитика результата</span>
+          <textarea data-prop="result" rows="3"></textarea>
+        </label>
+        <label class="field">
+          <span>Риски и контроль</span>
+          <textarea data-prop="risk" rows="3"></textarea>
+        </label>
+        <label class="field">
+          <span>Онбординг / инструкция</span>
+          <textarea data-prop="onboarding" rows="3"></textarea>
+        </label>
+        <div class="link-editor">
+          <label class="field">
+            <span>Связать с элементом</span>
+            <select id="linkTargetSelect"></select>
+          </label>
+          <button class="ghost-button" id="addLinkButton">Добавить связь</button>
+        </div>
+        <button class="danger-button" id="deleteNodeButton">Удалить элемент</button>
+      </div>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
