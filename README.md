@@ -70,13 +70,21 @@ npm run build
 
 ## GitHub Pages
 
-В репозитории есть workflow `.github/workflows/deploy-pages.yml`.
+Сервис публикуется из отдельной ветки `gh-pages`.
 
-После push в ветку `main` GitHub Actions:
+В GitHub откройте `Settings` -> `Pages` и выберите:
 
-1. Проверит JavaScript и структуру проекта.
-2. Соберет статический артефакт в `dist/`.
-3. Опубликует BPM Agent Studio через GitHub Pages.
+```text
+Source: Deploy from a branch
+Branch: gh-pages
+Folder: /root
+```
+
+После сохранения GitHub Pages опубликует BPM Agent Studio по адресу:
+
+```text
+https://almikhteev-png.github.io/diagramm/
+```
 
 В опубликованный артефакт попадают только:
 
